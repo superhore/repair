@@ -1,0 +1,51 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="re_list_tree_config">
+      <field name="name">xj.repair.re.tree</field>
+      <field name="model">xj.isguzhanginfo</field>
+      <field name="arch" type="xml">
+        <tree>
+
+            <field name="name"/>
+            <field name="des"/>
+        </tree>
+      </field>
+    </record>
+
+
+
+    <record model="ir.ui.view" id="re_list_tree_config">
+      <field name="name">xj.repair.re.tree</field>
+      <field name="model">xj.wxtype</field>
+      <field name="arch" type="xml">
+        <tree>
+
+            <field name="name"/>
+            <field name="des"/>
+            <field name="parent_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="weixiu_action_window_config">
+        <field name="name">故障原因</field>
+        <field name="res_model">xj.isguzhanginfo</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+     <record model="ir.actions.act_window" id="weixiu_action_window_configs">
+        <field name="name">维修申请</field>
+        <field name="res_model">xj.wxtype</field>
+        <field name="view_mode">tree,form</field>
+     </record>
+
+    <menuitem name="故障原因" id="weixiu_menu_2_list" parent="weixiu_menu_2"
+	    action="weixiu_action_window_config"/>
+    <menuitem name="维修类型" id="weixiu_menu_3_list" parent="weixiu_menu_2"
+	    action="weixiu_action_window_configs"/>
+
+  </data>
+</odoo>

@@ -1,0 +1,293 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="re_list_tree">
+      <field name="name">xj.repair.re.tree</field>
+      <field name="model">xj.mainten</field>
+      <field name="arch" type="xml">
+        <tree>
+
+            <field name="application_id"/>
+            <field name="s_ascriptions"/>
+            <field name="fixed_assets"/>
+            <field name="applicant"/>
+            <field name="isshenqing_time"/>
+            <field name="isguzhang_info"/>
+            <field name="isweixiu_yusuan"/>
+            <field name="isjiesuan"/>
+            <field name="iszhuangtai"/>
+            <field name="is_thischiliren"/>
+            <field name="isfukuan_bool"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="re_list_form">
+      <field name="name">weixiu list</field>
+      <field name="model">xj.mainten</field>
+      <field name="arch" type="xml">
+        <form>
+
+              <header>
+                  <field name="state" widget="statusbar" statusbar_visible="draft,confirm,validated,cancel,done"  readonly="1"/>
+                  <button>
+
+                  </button>
+
+              </header>
+
+              <sheet>
+                  <div class="oe_title">
+                      <h1>
+                            <!--
+                            <label string="维修付款 "/>
+                            -->
+                          <field name="name" class="oe_inline" readonly="1"/>
+                      </h1>
+                  </div>
+
+
+                  <group>
+
+                      <group>
+
+                          <field name="s_ascriptions"/>
+                          <field name="fixed_assets"/>
+                          <field name="isguzhang_info"/>
+                          <field name="isweixiu_type" on_change="onchange_isweixiu_type(isweixiu_type)"/>
+                          <field name="isshenpi_liu"/>
+
+                      </group>
+
+                      <group>
+                          <field name="applicant"/>
+                          <field name="isshenqing_time"/>
+                          <field name="islianxi_dianhua"/>
+                          <field name="type_son"/>
+                      </group>
+                  </group>
+
+                  <notebook>
+                      <page string="故障描述">
+                          <separator string="维修申请描述:"/>
+                          <field name="failure_condition" placeholder="简述故障状况.."/>
+                          <separator string=" 现场故障图(单击图片可查看大图,单击空白处可查看描述)"/>
+
+                      </page>
+
+                      <page string="预算/方案">
+                          <group>
+
+                              <group>
+                                  <field name="repaur_htime"/>
+                              </group>
+
+                              <group>
+                                  <field name="budgetary_type" on_change="onchange_budget_type(budgetary_type)"/>
+                                  <field name="budget_approval"/>
+                              </group>
+
+                              <separator string="维修方案"/>
+                              <field name="maintenance_plan" string=" "/>
+                              <separator string="维修预算明细"/>
+                              <field name="plan_detailed" string=" ">
+                                  <tree editable="bottom">
+                                      <field name="name"/>
+                                      <field name="unit_price"/>
+                                      <field name="number"/>
+                                      <field name="total"/>
+                                  </tree>
+                              </field>
+
+                              <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                  <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                      <label string="预算合计"/>
+
+                                      <h2>
+                                          <field name="budget_and"/>
+                                      </h2>
+                                      <button name="button_dummy" states="draft" string="(update)" type="object" class="oe_edit_only oe_link"/>
+                                   <!--   <button name="button_dummy" states="draft" string="(update)" type="object" class="oe_edit_only oe_link"/>  -->
+                                  </div>
+
+                              </group>
+
+
+
+
+                              <separator string="维修方案及必要作业证书附件"/>
+                              <field name="attachment_two" string=" ">
+
+                                  <tree>
+                                      <field name="name"/>
+                                      <field name="datas_fname"/>
+                                      <field name="type"/>
+                                      <field name="create_uid" string="上传人"/>
+                                  </tree>
+                                  <form>
+                                      <sheet>
+                                          <label for="name" class="oe_edit_only"/>
+                                          <h1>
+                                              <field name="name"/>
+                                          </h1>
+                                          <group string="附件">
+                                              <field name="type"/>
+                                              <field name="datas" filename="datas_fname" attrs="{'invisible':[('type','=','url')]}"/>
+                                              <field name="datas_fname" invisible="1" attrs="{'invisible':[('type','=','url')]}" class="oe_inline oe_right"/>
+                                              <field name="url" widget="url" attrs="{'invisible':[('type','=','binary')]}"/>
+                                          </group>
+                                      </sheet>
+                                  </form>
+                              </field>
+
+
+
+                          </group>
+
+                      </page>
+
+                      <page string="现场监督">
+                          <separator string="现场作业监督记录"/>
+                          <field name="attachment_there">
+
+                                  <tree>
+                                      <field name="name"/>
+                                      <field name="datas_fname"/>
+                                      <field name="type"/>
+                                      <field name="create_uid" string="上传人"/>
+                                  </tree>
+                                  <form>
+                                      <sheet>
+                                          <label for="name" class="oe_edit_only"/>
+                                          <h1>
+                                              <field name="name"/>
+                                          </h1>
+                                          <group string="附件">
+                                              <field name="type"/>
+                                              <field name="datas" filename="datas_fname" attrs="{'invisible':[('type','=','url')]}"/>
+                                              <field name="datas_fname" invisible="1" attrs="{'invisible':[('type','=','url')]}" class="oe_inline oe_right"/>
+                                              <field name="url" widget="url" attrs="{'invisible':[('type','=','binary')]}"/>
+                                          </group>
+                                      </sheet>
+                                  </form>
+                          </field>
+
+                      </page>
+
+                      <page string="维修结果确认">
+                          <separator string="维修结果意见描述"/>
+                          <div class="oe_clear"/>
+                          <field name="result_description"/>
+                          <separator string="现场维修结果图"/>
+
+                      </page>
+
+                      <page string="审批记录">
+                          <tree>
+
+                          </tree>
+                      </page>
+
+                      <page string="维修结算">
+                    <!--      <group>
+                              <group>
+                                  <field name="change_type" string="金额调整类型" attrs="{'invisible':[('state','=','draft')],'readonly':[('state','=','done')]}"/>
+                                  <field name="change_amount" string="调整金额(元)" attrs="{'invisible':[('state','=','draft')],'readonly':[('state','=','done')]}"/>
+                              </group>
+                              <group>
+                                  <field name="total_amount" string="本次结算总金额" attrs="{'invisible':[('state','=','draft')]}"/>
+                              </group>
+
+                          </group>  -->
+                        <group>
+                            <field name="change_type"/>
+                            <field name="change_amount"/>
+                        <!--    <field name="total_amount"/>  -->
+                        </group>
+                        <separator string="结算说明"/>
+                        <separator string="维修结算附件"/>
+
+                        <field name="attachment_fore">
+
+                                  <tree>
+                                      <field name="name"/>
+                                      <field name="datas_fname"/>
+                                      <field name="type"/>
+                                      <field name="create_uid" string="上传人"/>
+                                  </tree>
+                                  <form>
+                                      <sheet>
+                                          <label for="name" class="oe_edit_only"/>
+                                          <h1>
+                                              <field name="name"/>
+                                          </h1>
+                                          <group string="附件">
+                                              <field name="type"/>
+                                              <field name="datas" filename="datas_fname" attrs="{'invisible':[('type','=','url')]}"/>
+                                              <field name="datas_fname" invisible="1" attrs="{'invisible':[('type','=','url')]}" class="oe_inline oe_right"/>
+                                              <field name="url" widget="url" attrs="{'invisible':[('type','=','binary')]}"/>
+                                          </group>
+                                      </sheet>
+                                  </form>
+                        </field>
+
+                      </page>
+                  </notebook>
+
+              </sheet>
+
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+
+           </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="weixiu_action_window">
+      <field name="name">维修申请</field>
+      <field name="res_model">xj.mainten</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="repair_RE.action_server">
+      <field name="name">repair_RE server</field>
+      <field name="model_id" ref="model_weixiu_weixiu"/>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+
+    <menuitem name="维修管理" id="weixiu_menu_root" web_icon="mainten,static/pic/repair.png"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="维修工单" id="weixiu_menu_1" parent="weixiu_menu_root"/>
+    <menuitem name="配置" id="weixiu_menu_2" parent="weixiu_menu_root"/>
+
+    <!-- actions -->
+
+    <menuitem name="维修申请" id="weixiu_menu_1_list" parent="weixiu_menu_1"
+	    action="weixiu_action_window"/>
+  <!--  <menuitem name="故障原因" id="weixiu_menu_2_list" parent="weixiu_menu_2"
+	    action="weixiu_action_window"/>
+    <menuitem name="维修类型" id="weixiu_menu_3_list" parent="weixiu_menu_2"
+	    action="weixiu_action_window"/>  -->
+    <!--<menuitem name="Server to list" id="repair_RE" parent="repair_RE.menu_2"
+              action="repair_RE.action_server"/>   -->
+  </data>
+</odoo>
